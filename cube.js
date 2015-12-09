@@ -1,5 +1,4 @@
 var canvas;
-var gl;
 
 var cubeVerticesBuffer;
 var cubeVerticesColorBuffer;
@@ -28,7 +27,7 @@ var perspectiveMatrix;
 function start() {
   canvas = document.getElementById("glcanvas");
 
-  initWebGL(canvas);      // Initialize the GL context
+    var gl = initWebGL(canvas);      // Initialize the GL context
 
   // Only continue if WebGL is available and working
 
@@ -41,16 +40,18 @@ function start() {
     // Initialize the shaders; this is where all the lighting for the
     // vertices and so forth is established.
 
-    initShaders();
+      initShaders(gl);
 
     // Here's where we call the routine that builds all the objects
     // we'll be drawing.
 
-    initBuffers();
+      initBuffers(gl);
 
     // Set up to draw the scene periodically.
 
-    setInterval(drawScene, 15);
+      setInterval(function () {
+          drawScene(gl);
+      }, 15);
   }
 }
 
@@ -60,9 +61,8 @@ function start() {
 // Initialize WebGL, returning the GL context or null if
 // WebGL isn't available or could not be initialized.
 //
-function initWebGL() {
-  gl = null;
-
+function initWebGL(canvas) {
+    var gl;
   try {
     gl = canvas.getContext("experimental-webgl");
   }
@@ -74,6 +74,7 @@ function initWebGL() {
   if (!gl) {
     alert("Unable to initialize WebGL. Your browser may not support it.");
   }
+    return gl;
 }
 
 //
@@ -82,7 +83,7 @@ function initWebGL() {
 // Initialize the buffers we'll need. For this demo, we just have
 // one object -- a simple two-dimensional cube.
 //
-function initBuffers() {
+function initBuffers(gl) {
 
   // Create a buffer for the cube's vertices.
 
@@ -199,7 +200,7 @@ function initBuffers() {
 //
 // Draw the scene.
 //
-function drawScene() {
+function drawScene(gl) {
   // Clear the canvas before we start drawing on it.
 
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -240,7 +241,7 @@ function drawScene() {
   // Draw the cube.
 
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVerticesIndexBuffer);
-  setMatrixUniforms();
+    setMatrixUniforms(gl);
   gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
 
   // Restore the original matrix
@@ -273,7 +274,7 @@ function drawScene() {
 //
 // Initialize the shaders, so WebGL knows how to light our scene.
 //
-function initShaders() {
+function initShaders(gl) {
   var fragmentShader = getShader(gl, "shader-fs");
   var vertexShader = getShader(gl, "shader-vs");
 
