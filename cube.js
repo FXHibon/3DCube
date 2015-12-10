@@ -2,7 +2,7 @@ var canvas;
 
 var cubeVerticesBuffer;
 var cubeVerticesColorBuffer;
-var cubeVerticesIndexBuffer;
+
 var cubeVerticesIndexBuffer;
 var cubeRotation = 0.0;
 var cubeXOffset = 0.0;
@@ -19,11 +19,9 @@ var vertexPositionAttribute;
 var vertexColorAttribute;
 var perspectiveMatrix;
 
-//
-// start
-//
-// Called when the canvas is created to get the ball rolling.
-//
+/**
+ * Application boostrap
+ */
 function start() {
   canvas = document.getElementById("glcanvas");
 
@@ -55,16 +53,16 @@ function start() {
   }
 }
 
-//
-// initWebGL
-//
-// Initialize WebGL, returning the GL context or null if
-// WebGL isn't available or could not be initialized.
-//
+
+/**
+ * Get WebGLContext
+ * @param canvas
+ * @returns {*} WebGL context. Throws if not
+ */
 function initWebGL(canvas) {
     var gl;
   try {
-    gl = canvas.getContext("experimental-webgl");
+      gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
   }
   catch(e) {
   }
@@ -77,12 +75,11 @@ function initWebGL(canvas) {
     return gl;
 }
 
-//
-// initBuffers
-//
-// Initialize the buffers we'll need. For this demo, we just have
-// one object -- a simple two-dimensional cube.
-//
+
+/**
+ * Init buffers (our cube)
+ * @param gl
+ */
 function initBuffers(gl) {
 
   // Create a buffer for the cube's vertices.
@@ -127,11 +124,12 @@ function initBuffers(gl) {
      1.0,  1.0,  1.0,
      1.0, -1.0,  1.0,
 
-    // Left face
+      // Left face
     -1.0, -1.0, -1.0,
     -1.0, -1.0,  1.0,
     -1.0,  1.0,  1.0,
     -1.0,  1.0, -1.0
+
   ];
 
   // Now pass the list of vertices into WebGL to build the shape. We
@@ -156,7 +154,7 @@ function initBuffers(gl) {
 
   var generatedColors = [];
 
-  for (j=0; j<6; j++) {
+    for (var j = 0; j < 6; j++) {
     var c = colors[j];
 
     // Repeat each color four times for the four vertices of the face
@@ -187,7 +185,7 @@ function initBuffers(gl) {
     12, 13, 14,     12, 14, 15,   // bottom
     16, 17, 18,     16, 18, 19,   // right
     20, 21, 22,     20, 22, 23    // left
-  ]
+  ];
 
   // Now send the element array to GL
 
@@ -354,7 +352,7 @@ function getShader(gl, id) {
 
   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
     alert("An error occurred compiling the shaders: " + gl.getShaderInfoLog(shader));
-    return null;
+      return null;
   }
 
   return shader;
