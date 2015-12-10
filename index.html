@@ -54,18 +54,30 @@
 </div>
 
 <div id="menu-container">
+    <fieldset>
+        <legend>Parameters</legend>
+        <label for="velocity-input">
+            Rotation speed
+            <input type="range" id="velocity-input" min="5" max="350" value="10">
+            <input type="text" disabled id="rotation-speed-label">
+        </label>
+        <br/>
 
-    <label for="velocity-input">
-        Vitesse
-        <input type="range" id="velocity-input" min="10" max="150" value="10">
-    </label>
+        Faces color:
+        <input id="color-picker1" name="color" value="#0000ff" type="color">
+        <input id="color-picker2" name="color" value="#0000ff" type="color">
+        <input id="color-picker3" name="color" value="#ffffff" type="color">
+        <input id="color-picker4" name="color" value="#ffffff" type="color">
+        <input id="color-picker5" name="color" value="#ff0000" type="color">
+        <input id="color-picker6" name="color" value="#ff0000" type="color">
+        <br/>
+        <label for="background-picker">
+            Background color:
+            <input id="background-picker" name="color" value="#000000" type="color">
+        </label>
+    </fieldset>
 
-    <input id="color-picker1" name="color" value="#0000ff" type="color">
-    <input id="color-picker2" name="color" value="#0000ff" type="color">
-    <input id="color-picker3" name="color" value="#ffffff" type="color">
-    <input id="color-picker4" name="color" value="#ffffff" type="color">
-    <input id="color-picker5" name="color" value="#ff0000" type="color">
-    <input id="color-picker6" name="color" value="#ff0000" type="color">
+
 </div>
 </body>
 </html>

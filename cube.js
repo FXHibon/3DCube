@@ -19,8 +19,17 @@ var vertexPositionAttribute;
 var vertexColorAttribute;
 var perspectiveMatrix;
 var interval;
-var velocity = 30;
+var rotationSpeed = 30;
 
+function resetClearColor(gl) {
+    var stringColor = $('#background-picker').val();
+    var clearColor = [];
+    for (var rgbIndex = 0; rgbIndex < 3; rgbIndex++) {
+        var intColor = parseInt(stringColor.substr(1 + 2 * rgbIndex, 2), 16);
+        clearColor.push(intColor / 255);
+    }
+    gl.clearColor(clearColor[0], clearColor[1], clearColor[2], 1.0);  // Clear to black, fully opaque
+}
 /**
  * Application boostrap
  */
@@ -32,7 +41,7 @@ function start() {
     // Only continue if WebGL is available and working
 
     if (gl) {
-        gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
+        resetClearColor(gl);
         gl.clearDepth(1.0);                 // Clear everything
         gl.enable(gl.DEPTH_TEST);           // Enable depth testing
         gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
@@ -56,10 +65,16 @@ function start() {
         }
 
         $('#velocity-input').change(function () {
-            velocity = $('#velocity-input').val();
+            rotationSpeed = $('#velocity-input').val();
+            $('#rotation-speed-label').val(rotationSpeed);
         });
 
-        velocity = $('#velocity-input').val();
+        $('#background-picker').change(function () {
+            resetClearColor(gl);
+        });
+
+        rotationSpeed = $('#velocity-input').val();
+        $('#rotation-speed-label').val(rotationSpeed);
         interval = setInterval(function () {
             drawScene(gl);
         }, 1000 / 24);
@@ -155,10 +170,11 @@ function initBuffers(gl) {
     // for each face.
 
 
+    // Convert hexadecimal string to rgb int colors
     var colors = [];
     for (var faceIndex = 1; faceIndex <= 6; faceIndex++) {
-        var stringColor = $('#color-picker' + faceIndex).val();
         var faceColor = [];
+        var stringColor = $('#color-picker' + faceIndex).val();
         for (var rgbIndex = 0; rgbIndex < 3; rgbIndex++) {
             var intColor = parseInt(stringColor.substr(1 + 2 * rgbIndex, 2), 16);
             faceColor.push(intColor / 255);
@@ -271,10 +287,10 @@ function drawScene(gl) {
         var delta = currentTime - lastCubeUpdateTime;
 
 
-        cubeRotation += (velocity * delta) / 1000.0;
-        cubeXOffset += xIncValue * ((velocity * delta) / 1000.0);
-        cubeYOffset += yIncValue * ((velocity * delta) / 1000.0);
-        cubeZOffset += zIncValue * ((velocity * delta) / 1000.0);
+        cubeRotation += (rotationSpeed * delta) / 1000.0;
+        cubeXOffset += xIncValue * ((rotationSpeed * delta) / 1000.0);
+        cubeYOffset += yIncValue * ((rotationSpeed * delta) / 1000.0);
+        cubeZOffset += zIncValue * ((rotationSpeed * delta) / 1000.0);
 
         if (Math.abs(cubeYOffset) > 2.5) {
             xIncValue = -xIncValue;
