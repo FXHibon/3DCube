@@ -18,6 +18,8 @@ var shaderProgram;
 var vertexPositionAttribute;
 var vertexColorAttribute;
 var perspectiveMatrix;
+var interval;
+var velocity = 30;
 
 /**
  * Application boostrap
@@ -47,9 +49,20 @@ function start() {
 
         // Set up to draw the scene periodically.
 
-        setInterval(function () {
+        for (var i = 1; i <= 6; i++) {
+            $('#color-picker' + i).change(function () {
+                initBuffers(gl);
+            });
+        }
+
+        $('#velocity-input').change(function () {
+            velocity = $('#velocity-input').val();
+        });
+
+        velocity = $('#velocity-input').val();
+        interval = setInterval(function () {
             drawScene(gl);
-        }, 15);
+        }, 1000 / 24);
     }
 }
 
@@ -141,14 +154,19 @@ function initBuffers(gl) {
     // Now set up the colors for the faces. We'll use solid colors
     // for each face.
 
-    var colors = [
-        [1.0, 1.0, 1.0, 1.0],    // Front face: white
-        [1.0, 0.0, 0.0, 1.0],    // Back face: red
-        [0.0, 1.0, 0.0, 1.0],    // Top face: green
-        [0.0, 0.0, 1.0, 1.0],    // Bottom face: blue
-        [1.0, 1.0, 0.0, 1.0],    // Right face: yellow
-        [1.0, 0.0, 1.0, 1.0]     // Left face: purple
-    ];
+
+    var colors = [];
+    for (var faceIndex = 1; faceIndex <= 6; faceIndex++) {
+        var stringColor = $('#color-picker' + faceIndex).val();
+        var faceColor = [];
+        for (var rgbIndex = 0; rgbIndex < 3; rgbIndex++) {
+            var intColor = parseInt(stringColor.substr(1 + 2 * rgbIndex, 2), 16);
+            faceColor.push(intColor / 255);
+        }
+        faceColor.push(1.0);
+        colors.push(faceColor);
+    }
+
 
     // Convert the array of colors into a table for all the vertices.
 
@@ -252,10 +270,11 @@ function drawScene(gl) {
     if (lastCubeUpdateTime) {
         var delta = currentTime - lastCubeUpdateTime;
 
-        cubeRotation += (30 * delta) / 1000.0;
-        cubeXOffset += xIncValue * ((30 * delta) / 1000.0);
-        cubeYOffset += yIncValue * ((30 * delta) / 1000.0);
-        cubeZOffset += zIncValue * ((30 * delta) / 1000.0);
+
+        cubeRotation += (velocity * delta) / 1000.0;
+        cubeXOffset += xIncValue * ((velocity * delta) / 1000.0);
+        cubeYOffset += yIncValue * ((velocity * delta) / 1000.0);
+        cubeZOffset += zIncValue * ((velocity * delta) / 1000.0);
 
         if (Math.abs(cubeYOffset) > 2.5) {
             xIncValue = -xIncValue;

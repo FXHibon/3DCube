@@ -1,8 +1,11 @@
 <!doctype html>
 <html>
-  <head>
-    <title>WebGL Demo</title>
+<head>
+    <title>Amazing cube</title>
+
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="style.css" type="text/css">
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="sylvester.js" type="text/javascript"></script>
     <script src="glUtils.js" type="text/javascript"></script>
     <script src="matrix.js" type="text/javascript"></script>
@@ -16,6 +19,9 @@
       void main(void) {
         gl_FragColor = vColor;
       }
+
+
+
     </script>
 
     <!-- Vertex shader program -->
@@ -33,12 +39,33 @@
         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
         vColor = aVertexColor;
       }
-    </script>
-  </head>
 
-  <body onload="start()">
+
+
+    </script>
+</head>
+
+<body onload="start()">
+
+<div id="canvas-container">
     <canvas id="glcanvas" width="640" height="480">
-      Your browser doesn't appear to support the <code>&lt;canvas&gt;</code> element.
+        Your browser doesn't appear to support the <code>&lt;canvas&gt;</code> element.
     </canvas>
-  </body>
+</div>
+
+<div id="menu-container">
+
+    <label for="velocity-input">
+        Vitesse
+        <input type="range" id="velocity-input" min="10" max="150" value="10">
+    </label>
+
+    <input id="color-picker1" name="color" value="#0000ff" type="color">
+    <input id="color-picker2" name="color" value="#0000ff" type="color">
+    <input id="color-picker3" name="color" value="#ffffff" type="color">
+    <input id="color-picker4" name="color" value="#ffffff" type="color">
+    <input id="color-picker5" name="color" value="#ff0000" type="color">
+    <input id="color-picker6" name="color" value="#ff0000" type="color">
+</div>
+</body>
 </html>
