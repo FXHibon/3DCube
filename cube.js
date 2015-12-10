@@ -210,8 +210,8 @@ function drawScene(gl) {
 
   perspectiveMatrix = makePerspective(45, 640.0/480.0, 0.1, 100.0);
 
-  // Set the drawing position to the "identity" point, which is
-  // the center of the scene.
+    // Set the drawing position to the "identity" point, which is
+    // the center of the scene.
 
   loadIdentity();
 
