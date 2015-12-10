@@ -1,0 +1,21 @@
+{
+  "name": "DansTonCube",
+  "homepage": "https://github.com/FXHibon/3DCube",
+  "authors": [
+    "FXHibon <hibonfx@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4"
+  }
+}
